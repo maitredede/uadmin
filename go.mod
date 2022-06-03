@@ -1,4 +1,4 @@
-module github.com/uadmin/uadmin
+module github.com/maitredede/uadmin
 
 go 1.17
 

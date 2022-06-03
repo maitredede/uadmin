@@ -6,7 +6,7 @@ go:
   - "1.17"
   - 1.18.x
 
-go_import_path: github.com/uadmin/uadmin
+go_import_path: github.com/maitredede/uadmin
 
 script:
   - go test -coverprofile=coverage.txt -covermode=atomic

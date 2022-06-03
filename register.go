@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/inflection"
-	"github.com/uadmin/uadmin/helper"
+	"github.com/maitredede/uadmin/helper"
 )
 
 // HideInDashboarder used to check if a model should be hidden in

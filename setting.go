@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/uadmin/uadmin/colors"
+	"github.com/maitredede/uadmin/colors"
 )
 
 // DataType is a list of data types used for settings

@@ -2,11 +2,11 @@
 
 Easy to use, blazing fast and secure.
 
-[![go report card](https://goreportcard.com/badge/github.com/uadmin/uadmin "go report card")](https://goreportcard.com/report/github.com/uadmin/uadmin)
-[![GoDoc](https://godoc.org/github.com/uadmin/uadmin?status.svg)](https://godoc.org/github.com/uadmin/uadmin)
+[![go report card](https://goreportcard.com/badge/github.com/maitredede/uadmin "go report card")](https://goreportcard.com/report/github.com/maitredede/uadmin)
+[![GoDoc](https://godoc.org/github.com/maitredede/uadmin?status.svg)](https://godoc.org/github.com/maitredede/uadmin)
 [![codecov](https://codecov.io/gh/uadmin/uadmin/branch/master/graph/badge.svg)](https://codecov.io/gh/uadmin/uadmin)
 [![Build Status](https://travis-ci.com/uadmin/uadmin.svg?branch=master)](https://travis-ci.com/uadmin/uadmin)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/uadmin/uadmin/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/maitredede/uadmin/blob/master/LICENSE)
 
 Originally open source by [IntegrityNet Solutions and Services](https://www.integritynet.biz/)
 
@@ -29,17 +29,17 @@ Social Media:
 
 ### Dashboard Menu
 
-![Dashboard](https://github.com/uadmin/uadmin-docs/raw/master/assets/uadmindashboard.png)
+![Dashboard](https://github.com/maitredede/uadmin-docs/raw/master/assets/uadmindashboard.png)
 &nbsp;
 
 ### Log
 
-![Log](https://github.com/uadmin/uadmin-docs/raw/master/assets/log.png)
+![Log](https://github.com/maitredede/uadmin-docs/raw/master/assets/log.png)
 &nbsp;
 
 ### Login Form
 
-![Login Form](https://github.com/uadmin/uadmin-docs/raw/master/tutorial/assets/loginform.png)
+![Login Form](https://github.com/maitredede/uadmin-docs/raw/master/tutorial/assets/loginform.png)
 &nbsp;
 
 ## Features
@@ -96,7 +96,7 @@ Social Media:
 ## Installation
 
 ```bash
-$ go get -u github.com/uadmin/uadmin/...
+$ go get -u github.com/maitredede/uadmin/...
 ```
 
 To test if your installation is fine, run the `uadmin` command line:
@@ -129,7 +129,7 @@ $ uadmin prepare
 [   OK   ]   Created: /Users/abdullah/go/src/github.com/twistedhardware/test/api
 [   OK   ]   Created: /Users/abdullah/go/src/github.com/twistedhardware/test/views
 [   OK   ]   Created: /Users/abdullah/go/src/github.com/twistedhardware/test/media
-[  INFO  ]   Copying static/templates from: /Users/abdullah/go/pkg/mod/github.com/uadmin/uadmin@v0.6.0
+[  INFO  ]   Copying static/templates from: /Users/abdullah/go/pkg/mod/github.com/maitredede/uadmin@v0.6.0
 [   OK   ]   Created: /Users/abdullah/go/src/github.com/twistedhardware/test/static
 [   OK   ]   Created: /Users/abdullah/go/src/github.com/twistedhardware/test/templates
 ```
@@ -140,7 +140,7 @@ Now use your code editor to create `main.go` and put this code inside it.
 package main
 
 import (
-	"github.com/uadmin/uadmin"
+	"github.com/maitredede/uadmin"
 	"time"
 )
 
@@ -167,8 +167,8 @@ go: to add module requirements and sums:
 	go mod tidy
 
 $ go mod tidy
-go: finding module for package github.com/uadmin/uadmin
-go: found github.com/uadmin/uadmin in github.com/uadmin/uadmin v0.6.0
+go: finding module for package github.com/maitredede/uadmin
+go: found github.com/maitredede/uadmin in github.com/maitredede/uadmin v0.6.0
 ```
 
 Run your app (Linux, Apple macOS or Windows):

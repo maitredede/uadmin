@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/uadmin/uadmin/colors"
+	"github.com/maitredede/uadmin/colors"
 )
 
 const welcomeMessage = "" +

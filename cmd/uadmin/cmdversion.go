@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/maitredede/uadmin"
 	"github.com/spf13/cobra"
-	"github.com/uadmin/uadmin"
 )
 
 var cmdVersion = &cobra.Command{

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/uadmin/uadmin/colors"
+	"github.com/maitredede/uadmin/colors"
 	"gorm.io/gorm"
 )
 
