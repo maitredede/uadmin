@@ -74,7 +74,7 @@ func syncCustomTranslation(path string) map[string]int {
 	} else {
 		buf, err = ioutil.ReadFile(fileName)
 		if err != nil {
-			Trail(ERROR, "Unable to read system translation file (%s)", fileName)
+			Trail(ERROR, "Unable to read system translation file (%s): %v", fileName, err)
 			return stat
 		}
 		err = json.Unmarshal(buf, &langMap)
@@ -95,7 +95,7 @@ func syncCustomTranslation(path string) map[string]int {
 			}
 			buf, err = ioutil.ReadFile(langFileName)
 			if err != nil {
-				Trail(ERROR, "Unable to read system translation file (%s)", langFileName)
+				Trail(ERROR, "Unable to read system translation file (%s): %v", langFileName, err)
 				return stat
 			}
 			err = json.Unmarshal(buf, &langSystemMap)
@@ -278,7 +278,7 @@ func syncModelTranslation(m ModelSchema) map[string]int {
 		// Read/Parse language file from disk
 		buf, err = ioutil.ReadFile(langFileName)
 		if err != nil {
-			Trail(ERROR, "Unable to read system translation file (%s)", langFileName)
+			Trail(ERROR, "Unable to read system translation file (%s): %v", langFileName, err)
 			continue
 		}
 		err = json.Unmarshal(buf, &structLangOnFile)
