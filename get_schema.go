@@ -1,6 +1,7 @@
 package uadmin
 
 import (
+	"database/sql"
 	"fmt"
 	"reflect"
 	"runtime/debug"
@@ -65,10 +66,63 @@ func getSchema(a interface{}) (s ModelSchema, ok bool) {
 	NType6 := reflect.TypeOf(float32(0)) //
 	NType7 := reflect.TypeOf(float64(0)) //
 
+	isPlainNumber := func(t reflect.StructField) bool {
+		if t.Type == NType || t.Type == NType1 || t.Type == NType2 || t.Type == NType3 || t.Type == NType4 || t.Type == NType5 || t.Type == NType6 || t.Type == NType7 {
+			return true
+		}
+		return false
+	}
+	isNumber := func(t reflect.StructField) bool {
+		if isPlainNumber(t) {
+			return true
+		}
+		// if t.Type == reflect.TypeOf(sql.NullByte{}) {
+		// 	return true
+		// }
+		if t.Type == reflect.TypeOf(sql.NullInt16{}) {
+			return true
+		}
+		if t.Type == reflect.TypeOf(sql.NullInt32{}) {
+			return true
+		}
+		if t.Type == reflect.TypeOf(sql.NullInt64{}) {
+			return true
+		}
+		if t.Type == reflect.TypeOf(sql.NullFloat64{}) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*int)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*int32)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*int64)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*uint)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*uint32)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*uint64)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*float32)(nil)) {
+			return true
+		}
+		if t.Type == reflect.TypeOf((*float64)(nil)) {
+			return true
+		}
+		return false
+	}
+
 	// Loop over the fields of the model and get schema information
 	for index := 0; index < t.NumField(); index++ {
+		tField := t.Field(index)
 		// If the field is private, skip it
-		if strings.ToLower(string(t.Field(index).Name[0])) == string(t.Field(index).Name[0]) {
+		if strings.ToLower(string(tField.Name[0])) == string(tField.Name[0]) {
 			continue
 		}
 
@@ -78,12 +132,12 @@ func getSchema(a interface{}) (s ModelSchema, ok bool) {
 		}
 
 		// Get field's meta data
-		f.Name = t.Field(index).Name
-		f.DisplayName = getDisplayName(t.Field(index).Name)
-		f.ColumnName = db.Config.NamingStrategy.ColumnName("", t.Field(index).Name)
+		f.Name = tField.Name
+		f.DisplayName = getDisplayName(tField.Name)
+		f.ColumnName = db.Config.NamingStrategy.ColumnName("", tField.Name)
 
 		// Get uadmin tag from the field
-		tagList := strings.Split(t.Field(index).Tag.Get("uadmin"), ";")
+		tagList := strings.Split(tField.Tag.Get("uadmin"), ";")
 		tagMap := map[string]string{}
 		tagParts := map[string]string{}
 
@@ -158,47 +212,50 @@ func getSchema(a interface{}) (s ModelSchema, ok bool) {
 		}
 
 		// Get the type name
-		// f.TypeName = t.Field(index).Type.Name()
-		typeName := strings.Split(t.Field(index).Type.String(), ".")
+		// f.TypeName = tField.Type.Name()
+		typeName := strings.Split(tField.Type.String(), ".")
 		f.TypeName = typeName[len(typeName)-1]
 
 		// Process the field's data type
-		if t.Field(index).Type == SType {
-			f.Type = "string"
+		if tField.Type == SType {
+			f.Type = cSTRING
 		}
-		if t.Field(index).Type == DType || t.Field(index).Type == DType1 {
-			f.Type = "date"
+		if tField.Type == DType || tField.Type == DType1 {
+			f.Type = cDATE
 		}
-		if t.Field(index).Type == BType {
-			f.Type = "bool"
+		if tField.Type == BType {
+			f.Type = cBOOL
 		}
-		if t.Field(index).Type.Kind() == reflect.Struct && t.Field(index).Anonymous {
+		if tField.Type.Kind() == reflect.Struct && tField.Anonymous {
 			f.Type = cID
 			f.Name = "ID"
 			f.DisplayName = "ID"
 			f.ColumnName = "id"
 		}
-		if t.Field(index).Type == NType || t.Field(index).Type == NType1 || t.Field(index).Type == NType2 || t.Field(index).Type == NType3 || t.Field(index).Type == NType4 || t.Field(index).Type == NType5 || t.Field(index).Type == NType6 || t.Field(index).Type == NType7 {
-			f.Type = "number"
+		if isPlainNumber(tField) {
+			f.Type = cNUMBER
+			// f.Required = true
+		} else if isNumber(tField) {
+			f.Type = cNUMBER
 		}
-		if (t.Field(index).Type.Kind() == reflect.Struct && !t.Field(index).Anonymous && t.Field(index).Type != DType) ||
-			(t.Field(index).Type.Kind() == reflect.Ptr && t.Field(index).Type.Elem().Kind() == reflect.Struct && !t.Field(index).Anonymous && t.Field(index).Type != DType1) {
+		if (tField.Type.Kind() == reflect.Struct && !tField.Anonymous && tField.Type != DType) ||
+			(tField.Type.Kind() == reflect.Ptr && tField.Type.Elem().Kind() == reflect.Struct && !tField.Anonymous && tField.Type != DType1) {
 			f.Type = cFK
-			if val, ok := t.FieldByName(t.Field(index).Name + "ID"); ok {
+			if val, ok := t.FieldByName(tField.Name + "ID"); ok {
 				// Check if the FK field is a number
-				if !(val.Type == NType || val.Type == NType1 || val.Type == NType2 || val.Type == NType3 || val.Type == NType4 || val.Type == NType5) {
-					Trail(ERROR, "Invalid FK %s.%s your %sID field is not an integer based number", t.Name(), t.Field(index).Name, t.Field(index).Name)
+				if !isNumber(val) {
+					Trail(ERROR, "Invalid FK %s.%s your %sID field is not an integer based number", t.Name(), tField.Name, tField.Name)
 				}
 			} else {
-				Trail(ERROR, "Invalid FK %s.%s no ID field found. Please add %sID field with a number type to your struct", t.Name(), t.Field(index).Name, t.Field(index).Name)
+				Trail(ERROR, "Invalid FK %s.%s no ID field found. Please add %sID field with a number type to your struct", t.Name(), tField.Name, tField.Name)
 			}
 		}
-		if f.Type == cNUMBER && strings.HasSuffix(t.Field(index).Name, "ID") && t.Field(index).Name != "ID" {
-			if _, ok := t.FieldByName(strings.TrimSuffix(t.Field(index).Name, "ID")); ok {
+		if f.Type == cNUMBER && strings.HasSuffix(tField.Name, "ID") && tField.Name != "ID" {
+			if _, ok := t.FieldByName(strings.TrimSuffix(tField.Name, "ID")); ok {
 				continue
 			}
 		}
-		if t.Field(index).Type.Kind() == reflect.Slice {
+		if tField.Type.Kind() == reflect.Slice {
 			f.Type = cM2M
 		}
 
@@ -344,7 +401,7 @@ func getSchema(a interface{}) (s ModelSchema, ok bool) {
 			}
 		}
 
-		if _, ok := tagMap["money"]; ok {
+		if _, ok := tagMap[cMONEY]; ok {
 			if f.Type != cNUMBER {
 				Trail(WARNING, "Invalid money tag in %s.%s, field data type shold be number not (%s).", s.Name, f.Name, f.Type)
 			} else {
@@ -355,14 +412,14 @@ func getSchema(a interface{}) (s ModelSchema, ok bool) {
 		// Process static list type
 		// The way this is checked is if the type is not an int and the kind is an int the
 		// it is a static list
-		if t.Field(index).Type != NType && t.Field(index).Type.Kind() == reflect.Int {
+		if tField.Type != NType && tField.Type.Kind() == reflect.Int {
 			f.Type = cLIST
 
 			f.Choices = []Choice{
 				{" - ", 0, false},
 			}
-			for i := 0; i < t.Field(index).Type.NumMethod(); i++ {
-				v := t.Field(index).Type.Method(i).Name
+			for i := 0; i < tField.Type.NumMethod(); i++ {
+				v := tField.Type.Method(i).Name
 				e := reflect.ValueOf(a).Field(index)
 				e1 := reflect.Indirect(e).Method(i)
 

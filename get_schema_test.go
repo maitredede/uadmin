@@ -1019,3 +1019,122 @@ func compareSchema(modelName string, got, expected ModelSchema, t *testing.T) {
 		}
 	}
 }
+
+type Parentality struct {
+	Model
+	OptionalParent    *Parentality
+	OptionalParentID  *uint
+	MandatoryParent   *Parentality
+	MandatoryParentID uint
+}
+
+func TestGetSchemaOptionalForeignKey(t *testing.T) {
+	var schema ModelSchema
+	var expectedSchema ModelSchema
+	var ok bool
+
+	schema, ok = getSchema(Parentality{})
+	if !ok {
+		t.Errorf("getSchema could not parse Model1: %#v", Parentality{})
+	}
+	expectedSchema = ModelSchema{
+		Name:        "Parentality",
+		ModelName:   "parentality",
+		DisplayName: "Parentality",
+		Inlines:     []*ModelSchema{},
+		InlinesData: []listData{},
+		Fields: []F{
+			{
+				Name:              "ID",
+				DisplayName:       "ID",
+				Type:              cID,
+				TypeName:          "Model",
+				Value:             nil,
+				Help:              "",
+				Max:               "",
+				Min:               "",
+				Format:            "",
+				DefaultValue:      "",
+				Required:          false,
+				Pattern:           "",
+				PatternMsg:        "",
+				Hidden:            false,
+				ReadOnly:          "",
+				Searchable:        false,
+				Filter:            false,
+				ListDisplay:       true,
+				FormDisplay:       true,
+				CategoricalFilter: false,
+				Translations:      []translation{},
+				Choices:           []Choice(nil),
+				IsMethod:          false,
+				ErrMsg:            "",
+				ProgressBar:       map[float64]string(nil),
+				LimitChoicesTo:    nil,
+				UploadTo:          "",
+				Encrypt:           false,
+			},
+			{
+				Name:              "OptionalParent",
+				DisplayName:       "Optional Parent",
+				Type:              cFK,
+				TypeName:          "Parentality",
+				Value:             nil,
+				Help:              "",
+				Max:               "",
+				Min:               "",
+				Format:            "",
+				DefaultValue:      "",
+				Required:          false,
+				Pattern:           "",
+				PatternMsg:        "",
+				Hidden:            false,
+				ReadOnly:          "",
+				Searchable:        false,
+				Filter:            false,
+				ListDisplay:       true,
+				FormDisplay:       true,
+				CategoricalFilter: false,
+				Translations:      []translation{},
+				Choices:           []Choice(nil),
+				IsMethod:          false,
+				ErrMsg:            "",
+				ProgressBar:       map[float64]string(nil),
+				LimitChoicesTo:    nil,
+				UploadTo:          "",
+				Encrypt:           false,
+			},
+			{
+				Name:              "MandatoryParent",
+				DisplayName:       "Mandatory Parent",
+				Type:              cFK,
+				TypeName:          "Parentality",
+				Value:             nil,
+				Help:              "",
+				Max:               "",
+				Min:               "",
+				Format:            "",
+				DefaultValue:      "",
+				Required:          false,
+				Pattern:           "",
+				PatternMsg:        "",
+				Hidden:            false,
+				ReadOnly:          "",
+				Searchable:        false,
+				Filter:            false,
+				ListDisplay:       true,
+				FormDisplay:       true,
+				CategoricalFilter: false,
+				Translations:      []translation{},
+				Choices:           []Choice(nil),
+				IsMethod:          false,
+				ErrMsg:            "",
+				ProgressBar:       map[float64]string(nil),
+				LimitChoicesTo:    nil,
+				UploadTo:          "",
+				Encrypt:           false,
+			},
+		},
+	}
+	compareSchema("Parentality", schema, expectedSchema, t)
+}
