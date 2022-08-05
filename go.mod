@@ -9,6 +9,7 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/uadmin/rrd v0.0.0-20200219090641-e438da1b7640
 	github.com/xuri/excelize/v2 v2.6.0
+	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
 	golang.org/x/mod v0.5.1
 	golang.org/x/net v0.0.0-20220802222814-0bcc04d9c69b
@@ -38,6 +39,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xuri/efp v0.0.0-20220603152613-6918739fd470 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 )

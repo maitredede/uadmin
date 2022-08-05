@@ -136,7 +136,7 @@ func Handler(f func(http.ResponseWriter, *http.Request)) func(http.ResponseWrite
 		go func() {
 			if LogHTTPRequests {
 				// Send log to syslog
-				Syslogf(INFO, HTTP_LOG_MSG)
+				Trail(INFO, HTTP_LOG_MSG)
 			}
 		}()
 	}

@@ -3,7 +3,6 @@ package uadmin
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path"
@@ -75,7 +74,9 @@ func StartServer() {
 	fmt.Print(welcomeMessage)
 	dbOK = true
 	ServerReady = true
-	log.Println(http.ListenAndServe(fmt.Sprintf("%s:%d", BindIP, Port), nil))
+	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", BindIP, Port), nil); err != nil {
+		log.Error(err.Error())
+	}
 }
 
 // StartSecureServer !
@@ -121,7 +122,9 @@ func StartSecureServer(certFile, keyFile string) {
 	fmt.Print(welcomeMessage)
 	dbOK = true
 	ServerReady = true
-	log.Println(http.ListenAndServeTLS(fmt.Sprintf("%s:%d", BindIP, Port), certFile, keyFile, nil))
+	if err := http.ListenAndServeTLS(fmt.Sprintf("%s:%d", BindIP, Port), certFile, keyFile, nil); err != nil {
+		log.Error(err.Error())
+	}
 }
 
 func getBindIP() string {
